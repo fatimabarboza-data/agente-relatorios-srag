@@ -64,14 +64,15 @@ def criar_llm() -> BaseChatModel:
         raise LLMNaoConfiguradoError(
             f"LLM_PROVEDOR desconhecido: {provedor!r} (use openrouter, groq, google ou openai)"
         )
-    chave = os.getenv(VARIAVEL_CHAVE[provedor])
+    # strip(): chaves coladas pelo celular costumam vir com espaço ou quebra de linha no fim
+    chave = (os.getenv(VARIAVEL_CHAVE[provedor]) or "").strip()
     if not chave:
         raise LLMNaoConfiguradoError(f"Defina {VARIAVEL_CHAVE[provedor]} no arquivo .env")
 
     if provedor == "google":
         from langchain_google_genai import ChatGoogleGenerativeAI
 
-        return ChatGoogleGenerativeAI(model=modelo, temperature=TEMPERATURA, max_retries=2)
+        return ChatGoogleGenerativeAI(model=modelo, temperature=TEMPERATURA, max_retries=2, google_api_key=chave)
 
     from langchain_openai import ChatOpenAI
 

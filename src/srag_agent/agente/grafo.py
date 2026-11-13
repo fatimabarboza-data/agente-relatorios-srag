@@ -166,7 +166,8 @@ class AgenteSRAG:
         try:
             resposta = self.llm.bind_tools(FERRAMENTAS).invoke(mensagens)
         except Exception as erro:  # falha do provedor: o sistema segue com os insumos obrigatórios
-            self.trilha.registrar("erro_llm", etapa="orquestrador", erro=repr(erro))
+            causa = repr(erro.__cause__) if erro.__cause__ else None
+            self.trilha.registrar("erro_llm", etapa="orquestrador", erro=repr(erro), causa=causa)
             resposta = AIMessage("CONCLUIDO")
         chamadas = [{"ferramenta": c["name"], "argumentos": c["args"]} for c in resposta.tool_calls]
         self.trilha.registrar(
@@ -283,7 +284,8 @@ class AgenteSRAG:
             if comentario is None:
                 raise ValueError(f"Saída fora do formato esperado: {resultado.get('parsing_error')!r}")
         except Exception as erro:
-            self.trilha.registrar("erro_llm", etapa="redigir", tentativa=tentativas, erro=repr(erro))
+            causa = repr(erro.__cause__) if erro.__cause__ else None
+            self.trilha.registrar("erro_llm", etapa="redigir", tentativa=tentativas, erro=repr(erro), causa=causa)
             return {"violacoes": [f"Falha na chamada ao LLM: {type(erro).__name__}"], "tentativas_redacao": tentativas}
 
         violacoes = self._validar(comentario, estado)
