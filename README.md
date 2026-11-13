@@ -96,8 +96,9 @@ O agente é um **grafo de estados em LangGraph**:
 2. Em **Actions → Gerar relatório SRAG → Run workflow**.
 3. O relatório fica disponível como artefato da execução e é publicado em `docs/exemplo_relatorio/`.
 
-O mesmo workflow roda sozinho toda segunda-feira às 8h (Brasília). O workflow **Qualidade** roda lint e
-testes a cada push.
+O workflow **Qualidade** roda lint e testes a cada push. O exemplo em `docs/exemplo_relatorio/` foi gerado por
+esse workflow, com LLM e notícias reais; a trilha de auditoria da execução mostra inclusive um guardrail em ação
+(a primeira versão do texto citou números sem origem, foi reprovada e corrigida pelo próprio agente).
 
 ### Opção B — no computador
 

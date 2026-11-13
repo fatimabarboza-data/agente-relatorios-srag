@@ -4,10 +4,10 @@ name: Gerar relatório SRAG
 # do repositório (Settings > Secrets and variables > Actions), nunca no código
 # nem no log. O provedor é detectado pela chave cadastrada: OPENROUTER_API_KEY
 # (padrão, gratuita), GROQ_API_KEY, GOOGLE_API_KEY ou OPENAI_API_KEY.
+# Execução manual (Actions > Gerar relatório SRAG > Run workflow). Em produção, bastaria
+# acrescentar um "schedule" (cron) para gerar o relatório periodicamente.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 11 * * 1"  # segundas, 08:00 em Brasília
 
 permissions:
   contents: write

@@ -15,11 +15,13 @@ Dados até **{{ referencia }}** · gerado em {{ gerado_em }} · execução `{{ i
 {% for m in metricas -%}
 | {{ m.nome }} | {{ m.valor_formatado }} | {{ m.numerador | inteiro }} | {{ m.denominador | inteiro }} |
 {% endfor %}
+
 ## Análise
 
 {% for item in comentario.comentarios_metricas -%}
 - **{{ item.metrica | seguro }}**: {{ item.comentario | seguro }}
 {% endfor %}
+
 ## Gráficos
 
 ![Casos diários](casos_diarios_30d.png)
@@ -33,11 +35,13 @@ Dados até **{{ referencia }}** · gerado em {{ gerado_em }} · execução `{{ i
 {% for n in noticias -%}
 {{ n.indice }}. [{{ n.titulo }}]({{ n.link }}) - {{ n.veiculo }}, {{ n.publicada_em | data_br }}
 {% endfor %}
+
 ## Pontos de atenção
 
 {% for ponto in comentario.pontos_de_atencao -%}
 - {{ ponto | seguro }}
 {% endfor %}
+
 ## Limitações
 
 {% for item in limitacoes -%}
