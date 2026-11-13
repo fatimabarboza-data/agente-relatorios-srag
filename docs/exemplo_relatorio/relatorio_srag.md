@@ -1,12 +1,12 @@
 # Relatório de SRAG
 
-Dados até **25/06/2025** · gerado em 13/11/2026 15:07 · execução `f03b74ee44ba`
+Dados até **25/06/2025** · gerado em 13/11/2026 15:10 · execução `53163b537fd5`
 
 > Relatório gerado automaticamente por um agente de IA como prova de conceito. Não substitui boletins oficiais nem avaliação de profissionais de saúde, e não contém orientação médica individual.
 
 ## Resumo executivo
 
-O cenário de SRAG até 25/06/2025 mostra redução expressiva na taxa semanal de notificações (-35,89%), enquanto a taxa mensal permanece praticamente estável (+0,36%). A letalidade hospitalar no período de 30 dias é de 8,48%. O proxy de internação em UTI indica 26,95% dos casos com informação preenchida, e o proxy de vacinação contra covid-19 aponta 46,25% dos casos com registro de primeira dose. As notícias disponíveis referem-se a novembro de 2026, período posterior aos dados aqui analisados.
+Os dados até 25/06/2025 indicam estabilidade na tendência de 30 dias (+0,36%) e queda acentuada na comparação semanal (-35,89%), embora o efeito de notificações atrasadas e menor fluxo em fins de semana exija cautela na interpretação da redução recente. A letalidade hospitalar por SRAG situa-se em 8,48%, enquanto 26,95% dos internados com informação de UTI preenchida necessitaram de terapia intensiva (proxy, não taxa de ocupação de leitos). Entre os casos com status vacinal informado, 46,25% possuíam registro de primeira dose contra covid-19 (proxy, não cobertura populacional).
 
 ## Métricas
 
@@ -17,13 +17,15 @@ O cenário de SRAG até 25/06/2025 mostra redução expressiva na taxa semanal d
 | Taxa de mortalidade (letalidade hospitalar por SRAG) | 8,5% | 2.029 | 23.927 |
 | Taxa de ocupação de UTI (proxy: % de internados que foram para UTI) | 26,9% | 10.673 | 39.608 |
 | Taxa de vacinação contra covid-19 (proxy: % dos casos com vacina comprovada) | 46,2% | 21.399 | 46.264 |
+
 ## Análise
 
-- **Taxa de aumento de casos (7 dias)**: A queda de 35,89% nas notificações da semana mais recente (6.698 casos) frente à anterior (10.448) sugere redução de transmissão ou de notificação. Fins de semana e feriados podem subestimar os registros mais recentes, devendo-se aguardar consolidação antes de confirmar tendência de queda.
-- **Taxa de aumento de casos (30 dias)**: A variação de +0,36% no acumulado de 30 dias (46.845 vs 46.678) indica estabilidade no volume de notificações no período mais amplo, contrastando com a queda semanal pontual.
-- **Taxa de mortalidade (letalidade hospitalar por SRAG)**: A letalidade hospitalar de 8,48% (2.029 óbitos em 23.927 casos com evolução conhecida) reflete a gravidade dos casos notificados no período de 30 dias encerrado em 25/06/2025.
-- **Taxa de ocupação de UTI (proxy: % de internados que foram para UTI)**: O proxy de 26,95% (10.673 de 39.608 casos com informação de UTI preenchida) representa a proporção de casos internados que necessitaram de UTI, não a taxa de ocupação de leitos da rede hospitalar.
-- **Taxa de vacinação contra covid-19 (proxy: % dos casos com vacina comprovada)**: O proxy de 46,25% (21.399 de 46.264 casos com informação vacinal) indica a proporção de casos de SRAG com registro de primeira dose de vacina covid-19, não a cobertura vacinal da população geral.
+- **Taxa de aumento de casos (7 dias)**: A variação de -35,89% (6.698 vs 10.448 casos) sugere redução importante nas notificações da semana mais recente. Contudo, os registros mais recentes ainda recebem notificações atrasadas e fins de semana/feriados tendem a reduzir o fluxo de notificação; portanto, não se deve afirmar queda sustentada de casos sem consolidação das próximas semanas.
+- **Taxa de aumento de casos (30 dias)**: A variação de +0,36% (46.845 vs 46.678 casos) indica estabilidade no volume de notificações ao longo do último mês, o que contrasta com a queda semanal e reforça a necessidade de aguardar a consolidação dos dados recentes antes de inferir mudança de tendência.
+- **Taxa de mortalidade (letalidade hospitalar por SRAG)**: A letalidade hospitalar de 8,48% (2.029 óbitos em 23.927 casos com evolução conhecida) reflete a gravidade dos casos notificados no período. O indicador considera apenas casos com desfecho informado (cura ou óbito), podendo subestimar a letalidade real se houver grande proporção de evoluções em aberto.
+- **Taxa de ocupação de UTI (proxy: % de internados que foram para UTI)**: O proxy de 26,95% (10.673 de 39.608 internados com informação de UTI preenchida) representa a proporção de hospitalizados que necessitaram de terapia intensiva, não a taxa de ocupação de leitos de UTI da rede. A métrica depende do preenchimento do campo UTI (Sim/Não) e pode variar com a completude do dado.
+- **Taxa de vacinação contra covid-19 (proxy: % dos casos com vacina comprovada)**: Entre os casos com status vacinal informado (Sim/Não), 46,25% (21.399 de 46.264) apresentavam registro de primeira dose contra covid-19. Trata-se de proxy da situação vacinal dos casos notificados, não da cobertura vacinal da população geral, e está sujeito a viés de notificação e completude do campo vacina.
+
 ## Gráficos
 
 ![Casos diários](casos_diarios_30d.png)
@@ -32,7 +34,7 @@ O cenário de SRAG até 25/06/2025 mostra redução expressiva na taxa semanal d
 
 ## Contexto das notícias
 
-As 12 notícias listadas são de novembro de 2026 (buscadas em 13/11/2026) e relatam aumento de casos graves de covid-19 e SRAG naquele momento [1][2][3][4][5][6][7][8][9][10][11][12]. Como os dados do relatório referem-se a junho de 2025, as notícias descrevem cenário epidemiológico posterior e não explicam as métricas aqui apresentadas.
+As notícias disponíveis referem-se a novembro de 2026 [1-12], período posterior à data de referência dos dados (junho de 2025). Elas descrevem sinais de crescimento de SRAG e covid-19 naquele momento, o que não se sobrepõe ao cenário de estabilidade/queda observado nos indicadores de junho de 2025. A discrepância temporal deve ser considerada ao contextualizar o relatório.
 
 1. [Casos graves de Covid-19 dão sinal de crescimento no Brasil, aponta Fiocruz](https://news.google.com/rss/articles/CBMirwFBVV95cUxNYkxXVDYydDF6MklRNTlnSWNqVkFHcDBqdDhDdzhBSHhUb0FpWk5WalRWOUYwVlVITm9pR3ZsVS1YVGpDbWN5M3I0UDV1ZVFYdlQwUGY3OEtSV09CZHJCajhJR2Z6UnBUQkFnVkdxLVktMEtHajFfTHA1OEVUREhhbEE0TlQzUTM3S2kzalY0WEJkT25tR2drVEhyTlZXcmJyYzlRM1JkdEVQTm9HX1BB?oc=5) - CNN Brasil, 13/11/2026
 2. [Casos de Covid-19 apresentam aumento no Brasil, aponta boletim da Fiocruz](https://news.google.com/rss/articles/CBMinwFBVV95cUxQN3pabm9mWmNZQlVrS1p3SjZZUFJoMzhqczc1SWFQSFU3NEJ1cjNFclo1ZVhTR0t2eVpDY1MwMjdWNWExMlhmRlp5RmdSVllnRHBJYXM3T2xPRnVnbHh5WFJKZDVmc3ljT1V5eXVoVlRwcFJkVTh3X1JzckpwSTFWNzh2UDZieldUZGRGcGh5Y0RoejRsUzFzUXpMQTQxRlU?oc=5) - Fala Matão, 13/11/2026
@@ -46,12 +48,14 @@ As 12 notícias listadas são de novembro de 2026 (buscadas em 13/11/2026) e rel
 10. [Alta de casos de SRAG no boletim InfoGripe motiva alerta de pneumologista da Santa Casa de Mauá](https://news.google.com/rss/articles/CBMif0FVX3lxTE8yWlByMGZYSXN1NnFfSExxYVU0b1FuMkNLc1k3WEpaVUlVV1Y4UkI1MlpwUHBMQmh4X0ZrNEF2U0RqYU5BTTAzSVltUTB4UktPV3NHV2xmQUZmYVFmTE9RVl9RdmJYV3FpWUlWcmtPeW9ZUWs5d0pxN2E3TzNVeE0?oc=5) - ABC Agora, 12/11/2026
 11. [Casos de Síndrome Respiratória Grave (SRAG) devem aumentar, diz boletim da Fiocruz](https://news.google.com/rss/articles/CBMi5gFBVV95cUxNS29MdUJPTXdvLXZZZUdnSDM0RGpXSzd1S3ZNTzJEeWJVMDlpQ21QeFVlVmZwSm5PSl9FbTNUVnpYVE82czZwbWduXzAxTHRPM2tId1lrS1AtUFhDU1RsVmozMnlrVDdzaGh0N0lzRnVYY0I2RkFOY21yaEx3NVJVT0FOcjNtZXhVZURaRVVCZG1uUEw4czdLcDkxbVRCRXlvR2l1cVFzQlpSZDQzVFZROTZsRFQwalBXcnZwVVlTVGl0R3JjZ3MxR2Y4WDJYN2d6aFdFUTFZYWFJSUlONDFNZmhyRC04dw?oc=5) - Diario de Pernambuco, 11/11/2026
 12. [InfoGripe: casos de SRAG por metapneumovírus, rinovírus e Covid-19 crescem no país](https://news.google.com/rss/articles/CBMiygFBVV95cUxQM1U1VzYzemh2R3JTem8yTVNxV09rRGV3LVBHQ1RLaW5qX0ZSZGdqUXh2UTlqRFFDMEdMeGFtbUR6SGJxQkdlTnNQTzk1enJ6Y0tPLWdvNDlyTHkycVN0bkZMX3oyMXB2Rkd2WXdUODFKYTRpc1JMamJuZTJCX3BjaW80OWNlQjBGRkZOS3ZKQ0JYOWNNUUFqNGpQY0hTQUJ2M284Yk9CdjFUNVlXMUNoS1NTYjNVendHUzlKZUtaMkpHQzY5dzBqc0VB?oc=5) - Portal do Marcos Santos, 07/11/2026
+
 ## Pontos de atenção
 
-- Consolidar notificações das semanas mais recentes antes de confirmar tendência de queda, considerando atrasos e efeito de fim de semana.
-- Monitorar a letalidade hospitalar (8,48%) e comparar com séries históricas para detectar mudanças na gravidade ou no perfil dos casos.
-- Interpretar os proxies de UTI (26,95%) e vacinação (46,25%) com cautela: não representam ocupação de leitos nem cobertura populacional.
-- Acompanhar a estabilidade no acumulado de 30 dias (+0,36%) frente à queda semanal (-35,89%) para identificar possíveis mudanças de padrão.
+- Aguardar consolidação das notificações das semanas mais recentes antes de confirmar tendência de queda, dado o atraso habitual e efeito de fim de semana.
+- Monitorar a completude dos campos de evolução (cura/óbito), UTI e vacinação para reduzir viés nos proxies de letalidade, necessidade de terapia intensiva e situação vacinal dos casos.
+- Acompanhar a tendência de 30 dias nas próximas atualizações para distinguir flutuação de notificação de mudança epidemiológica real.
+- Considerar a sazonalidade de vírus respiratórios e a circulação de múltiplos agentes (covid-19, influenza, vírus sincicial, metapneumovírus, rinovírus) na interpretação do volume de SRAG.
+
 ## Limitações
 
 - O arquivo disponibilizado cobre de 29/12/2024 a 26/06/2025; o gráfico de 12 meses mostra os meses anteriores como fora do arquivo.
