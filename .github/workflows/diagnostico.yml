@@ -1,0 +1,16 @@
+name: Diagnostico GitHub Models (temporario)
+on: workflow_dispatch
+permissions:
+  models: read
+jobs:
+  teste:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for url in https://models.github.ai/inference/chat/completions https://models.inference.ai.azure.com/chat/completions; do
+            echo "== $url"
+            curl -s -i -X POST "$url" -H "Content-Type: application/json" -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -d '{"model":"openai/gpt-4.1-mini","messages":[{"role":"user","content":"diga ola"}]}' | head -c 1500; echo
+          done
