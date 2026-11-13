@@ -38,6 +38,7 @@ from srag_agent.governanca.auditoria import TrilhaAuditoria, hash_texto
 
 MAXIMO_RODADAS_ORQUESTRADOR = 6
 MAXIMO_BUSCAS_NOTICIAS = 3
+MAXIMO_NOTICIAS_NO_RELATORIO = 12
 MAXIMO_TENTATIVAS_REDACAO = 3  # 1 tentativa + 2 correções
 CONSULTA_PADRAO_NOTICIAS = "SRAG casos Brasil"
 
@@ -145,6 +146,8 @@ class AgenteSRAG:
 
         titulos = {noticia["titulo"].lower() for noticia in noticias}
         for noticia in resultado["noticias"]:
+            if len(noticias) >= MAXIMO_NOTICIAS_NO_RELATORIO:
+                break
             if noticia["titulo"].lower() not in titulos:
                 titulos.add(noticia["titulo"].lower())
                 noticias.append({**noticia, "indice": len(noticias) + 1})

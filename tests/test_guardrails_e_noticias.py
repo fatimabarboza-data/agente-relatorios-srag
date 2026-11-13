@@ -72,6 +72,11 @@ def test_numeros_das_metricas_sao_aceitos_inclusive_arredondados():
     assert guardrails.encontrar_numeros_nao_rastreaveis(texto, METRICAS) == []
 
 
+def test_nomes_de_doencas_e_datas_iso_nao_sao_confundidos_com_numeros():
+    texto = "Casos de Covid-19 e SARS-CoV-2 em 2025-06-19; queda de 35,9%."
+    assert guardrails.encontrar_numeros_nao_rastreaveis(texto, METRICAS) == []
+
+
 def test_numero_inventado_e_detectado():
     texto = "A letalidade subiu para 12,7% e houve 15.000 casos."
     assert guardrails.encontrar_numeros_nao_rastreaveis(texto, METRICAS) == ["12,7", "15.000"]
@@ -111,7 +116,7 @@ def test_provedor_do_llm_e_detectado_pela_chave_configurada(monkeypatch):
     monkeypatch.setenv("GROQ_API_KEY", "teste")
     assert llm.descrever_configuracao() == {"provedor": "groq", "modelo": "openai/gpt-oss-120b", "temperatura": 0.2}
     monkeypatch.setenv("OPENROUTER_API_KEY", "teste")
-    assert llm.descrever_configuracao()["modelo"] == "openrouter/free"
+    assert llm.descrever_configuracao()["modelo"] == "nvidia/nemotron-3-ultra-550b-a55b:free"
     monkeypatch.setenv("LLM_PROVEDOR", "openai")
     with pytest.raises(llm.LLMNaoConfiguradoError):
         llm.criar_llm()

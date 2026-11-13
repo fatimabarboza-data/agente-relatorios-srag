@@ -79,9 +79,9 @@ O agente é um **grafo de estados em LangGraph**:
 - **Grafo explícito em vez de agente "livre":** o LLM tem autonomia onde ela agrega valor (escolher buscas e
   interpretar), e o fluxo crítico (insumos obrigatórios, validação, montagem) é determinístico e testável.
 - **Separar cálculo de redação** elimina a principal fonte de erro de LLMs em relatórios: números inventados.
-- **LLM trocável:** OpenRouter por padrão (chave gratuita, sem cartão; o roteador `openrouter/free` escolhe um
-  modelo gratuito com suporte a tool calling e saída estruturada). Groq, Gemini ou OpenAI com uma linha no `.env`.
-  O modelo que efetivamente respondeu fica registrado na trilha de auditoria.
+- **LLM trocável:** OpenRouter por padrão (chave gratuita, sem cartão), com o modelo gratuito Nemotron 3 Ultra
+  (NVIDIA) e o roteador `openrouter/free` como reserva caso ele esteja indisponível. Groq, Gemini ou OpenAI com uma
+  linha no `.env`. O modelo que efetivamente respondeu fica registrado na trilha de auditoria.
 - **Google Notícias via RSS:** dispensa cadastro e chave, então qualquer pessoa consegue reproduzir o projeto.
 - **SQLite:** o desafio pede um banco consultado pelo agente; o SQLite não exige servidor e permite abrir a
   conexão em modo somente leitura.
@@ -199,7 +199,7 @@ Outras medidas:
 - Pacote Python com responsabilidades separadas: `dados` (ETL), `ferramentas` (tools), `agente` (grafo, prompts,
   relatório) e `governanca` (auditoria e guardrails). O layout do relatório fica em templates Jinja2.
 - Configuração centralizada (`config.py`, `.env`), type hints e docstrings explicando o **porquê** das decisões.
-- **29 testes automatizados** (`pytest`), incluindo o fluxo do agente com um LLM roteirizado: ferramenta
+- **30 testes automatizados** (`pytest`), incluindo o fluxo do agente com um LLM roteirizado: ferramenta
   obrigatória esquecida, número inventado, correção, reserva, ferramenta proibida e busca fora do tema.
 - `ruff` para lint e formatação, e **CI no GitHub Actions** a cada push.
 

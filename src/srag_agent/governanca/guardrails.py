@@ -115,7 +115,9 @@ def encontrar_numeros_nao_rastreaveis(
     Ignora datas (25/06/2025), anos (2024, 2025) e números de 1 dígito.
     """
     permitidos = numeros_permitidos(resultado_metricas) | (extras or set())
-    sem_datas = re.sub(r"\b\d{1,2}/\d{1,2}(/\d{2,4})?\b", " ", texto)
+    sem_datas = re.sub(r"\b\d{4}-\d{2}-\d{2}\b", " ", texto)  # datas ISO, ex.: 2025-06-19
+    sem_datas = re.sub(r"\b\d{1,2}/\d{1,2}(/\d{2,4})?\b", " ", sem_datas)  # datas, ex.: 25/06/2025
+    sem_datas = re.sub(r"\b[A-Za-zÀ-ÿ]+(-[A-Za-zÀ-ÿ]+)*-\d+\b", " ", sem_datas)  # nomes, ex.: Covid-19, SARS-CoV-2
     sem_datas = re.sub(r"\[\d+\]", " ", sem_datas)  # referências às notícias, ex.: [2]
     suspeitos = []
     for bruto in re.findall(r"-?\d[\d.,]*\d|\d", sem_datas):

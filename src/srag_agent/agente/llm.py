@@ -6,9 +6,10 @@ Variáveis:
 - LLM_MODELO: opcional; cada provedor tem um modelo padrão.
 - Chaves: OPENROUTER_API_KEY / GROQ_API_KEY / GOOGLE_API_KEY / OPENAI_API_KEY.
 
-OpenRouter (padrão): uma chave gratuita, sem cartão. O modelo "openrouter/free"
-escolhe um modelo gratuito que suporte o que a chamada precisa (tool calling e
-saída estruturada); o modelo que respondeu fica registrado na auditoria.
+OpenRouter (padrão): uma chave gratuita, sem cartão. Usamos um modelo gratuito
+fixo (Nemotron 3 Ultra, da NVIDIA) para o texto ter qualidade estável e, se ele
+estiver indisponível, o roteador "openrouter/free" escolhe outro modelo gratuito
+com suporte a tool calling. O modelo que respondeu fica registrado na auditoria.
 
 Temperatura baixa: o relatório é técnico, queremos respostas estáveis.
 """
@@ -18,7 +19,7 @@ import os
 from langchain_core.language_models import BaseChatModel
 
 MODELO_PADRAO = {
-    "openrouter": "openrouter/free",
+    "openrouter": "nvidia/nemotron-3-ultra-550b-a55b:free",
     "groq": "openai/gpt-oss-120b",
     "google": "gemini-flash-latest",
     "openai": "gpt-4o-mini",
@@ -34,6 +35,7 @@ URL_COMPATIVEL_OPENAI = {
     "groq": "https://api.groq.com/openai/v1",
     "openrouter": "https://openrouter.ai/api/v1",
 }
+MODELO_RESERVA_OPENROUTER = "openrouter/free"
 TEMPERATURA = 0.2
 
 
@@ -76,10 +78,13 @@ def criar_llm() -> BaseChatModel:
 
     from langchain_openai import ChatOpenAI
 
+    # No OpenRouter, "models" define a ordem de tentativa: o modelo escolhido e depois a reserva
+    extra_body = {"models": [modelo, MODELO_RESERVA_OPENROUTER]} if provedor == "openrouter" else None
     return ChatOpenAI(
         model=modelo,
         temperature=TEMPERATURA,
         max_retries=2,
         api_key=chave,
         base_url=URL_COMPATIVEL_OPENAI.get(provedor),
+        extra_body=extra_body,
     )
