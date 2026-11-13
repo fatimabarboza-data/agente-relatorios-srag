@@ -91,7 +91,7 @@ class LLMRoteirizado:
     def bind_tools(self, _ferramentas):
         return self
 
-    def with_structured_output(self, _esquema):
+    def with_structured_output(self, _esquema, **_opcoes):
         llm = self
 
         class _Redator:

@@ -265,7 +265,7 @@ class AgenteSRAG:
         )
 
         try:
-            comentario = self.llm.with_structured_output(ComentarioRelatorio).invoke(
+            comentario = self.llm.with_structured_output(ComentarioRelatorio, method="function_calling").invoke(
                 [SystemMessage(sistema), HumanMessage(entrada)]
             )
         except Exception as erro:

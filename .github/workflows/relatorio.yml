@@ -1,8 +1,9 @@
 name: Gerar relatório SRAG
 
 # Roda o agente na nuvem do GitHub: a chave fica guardada como "secret" do
-# repositório (Settings > Secrets and variables > Actions > GOOGLE_API_KEY)
-# e nunca aparece no código nem no log.
+# repositório (Settings > Secrets and variables > Actions > GROQ_API_KEY,
+# GOOGLE_API_KEY ou OPENAI_API_KEY) e nunca aparece no código nem no log.
+# O provedor é escolhido automaticamente pela chave que existir.
 on:
   workflow_dispatch:
   schedule:
@@ -23,8 +24,9 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Executar agente
         env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          LLM_PROVEDOR: google
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: PYTHONPATH=src python -m srag_agent
       - name: Publicar exemplo no repositório
         run: |

@@ -92,3 +92,17 @@ def test_mascaramento_de_dados_pessoais():
     texto = "Contato: 123.456.789-09, fulano@email.com, (11) 98765-4321."
     mascarado = guardrails.mascarar_dados_pessoais(texto)
     assert "123.456.789-09" not in mascarado and "fulano@email.com" not in mascarado and "98765-4321" not in mascarado
+
+
+def test_provedor_do_llm_e_detectado_pela_chave_configurada(monkeypatch):
+    from srag_agent.agente import llm
+
+    for variavel in ["LLM_PROVEDOR", "LLM_MODELO", "GROQ_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY"]:
+        monkeypatch.delenv(variavel, raising=False)
+    monkeypatch.setenv("GOOGLE_API_KEY", "teste")
+    assert llm.descrever_configuracao()["provedor"] == "google"
+    monkeypatch.setenv("GROQ_API_KEY", "teste")
+    assert llm.descrever_configuracao() == {"provedor": "groq", "modelo": "openai/gpt-oss-120b", "temperatura": 0.2}
+    monkeypatch.setenv("LLM_PROVEDOR", "openai")
+    with pytest.raises(llm.LLMNaoConfiguradoError):
+        llm.criar_llm()

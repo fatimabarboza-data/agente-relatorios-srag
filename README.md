@@ -79,7 +79,8 @@ O agente é um **grafo de estados em LangGraph**:
 - **Grafo explícito em vez de agente "livre":** o LLM tem autonomia onde ela agrega valor (escolher buscas e
   interpretar), e o fluxo crítico (insumos obrigatórios, validação, montagem) é determinístico e testável.
 - **Separar cálculo de redação** elimina a principal fonte de erro de LLMs em relatórios: números inventados.
-- **LLM trocável:** Gemini por padrão (tem plano gratuito); OpenAI com uma linha no `.env`.
+- **LLM trocável:** Groq por padrão (modelo aberto `gpt-oss-120b`, gratuito e sem cartão); Gemini ou OpenAI com
+  uma linha no `.env`. O provedor é detectado pela chave configurada.
 - **Google Notícias via RSS:** dispensa cadastro e chave, então qualquer pessoa consegue reproduzir o projeto.
 - **SQLite:** o desafio pede um banco consultado pelo agente; o SQLite não exige servidor e permite abrir a
   conexão em modo somente leitura.
@@ -88,8 +89,9 @@ O agente é um **grafo de estados em LangGraph**:
 
 ### Opção A — no GitHub, sem instalar nada (recomendado)
 
-1. Em **Settings → Secrets and variables → Actions**, crie o secret `GOOGLE_API_KEY`
-   (chave gratuita em [aistudio.google.com/app/apikey](https://aistudio.google.com/app/apikey)).
+1. Em **Settings → Secrets and variables → Actions**, crie o secret `GROQ_API_KEY`
+   (chave gratuita, sem cartão, em [console.groq.com/keys](https://console.groq.com/keys)). Também funciona com
+   `GOOGLE_API_KEY` ou `OPENAI_API_KEY`.
 2. Em **Actions → Gerar relatório SRAG → Run workflow**.
 3. O relatório fica disponível como artefato da execução e é publicado em `docs/exemplo_relatorio/`.
 
@@ -107,7 +109,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate   |   Linux/Mac: source .venv/bin/activate
 pip install -r requirements-dev.txt
 
-cp .env.example .env        # e preencha GOOGLE_API_KEY
+cp .env.example .env        # e preencha GROQ_API_KEY
 python -m srag_agent        # com LLM
 python -m srag_agent --sem-llm   # sem LLM, para testar o pipeline
 pytest -q                   # testes
@@ -186,8 +188,8 @@ Outras medidas:
 
 - **Minimização no ETL:** das 194 colunas, só 13 entram no banco. Data de nascimento, município, unidade de
   saúde, ocupação, textos livres e número da notificação ficam de fora; a idade vira faixa etária.
-- **O LLM só recebe agregados** (taxas, contagens, títulos de notícias). Isso importa também porque, no plano
-  gratuito do Gemini, os dados enviados podem ser usados pelo Google para melhorar produtos.
+- **O LLM só recebe agregados** (taxas, contagens, títulos de notícias). Isso importa também porque planos
+  gratuitos de LLM podem usar os dados enviados para melhorar os produtos do fornecedor.
 - **Segredos fora do código:** `.env` está no `.gitignore`; na nuvem, a chave fica em GitHub Secrets.
 - Um teste automatizado garante que colunas identificadoras não aparecem no banco.
 
@@ -196,7 +198,7 @@ Outras medidas:
 - Pacote Python com responsabilidades separadas: `dados` (ETL), `ferramentas` (tools), `agente` (grafo, prompts,
   relatório) e `governanca` (auditoria e guardrails). O layout do relatório fica em templates Jinja2.
 - Configuração centralizada (`config.py`, `.env`), type hints e docstrings explicando o **porquê** das decisões.
-- **27 testes automatizados** (`pytest`), incluindo o fluxo do agente com um LLM roteirizado: ferramenta
+- **28 testes automatizados** (`pytest`), incluindo o fluxo do agente com um LLM roteirizado: ferramenta
   obrigatória esquecida, número inventado, correção, reserva, ferramenta proibida e busca fora do tema.
 - `ruff` para lint e formatação, e **CI no GitHub Actions** a cada push.
 
