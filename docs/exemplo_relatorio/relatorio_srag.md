@@ -1,12 +1,12 @@
 # Relatório de SRAG
 
-Dados até **25/06/2025** · gerado em 13/11/2026 15:03 · execução `4ca18ed665d2`
+Dados até **25/06/2025** · gerado em 13/11/2026 15:07 · execução `f03b74ee44ba`
 
 > Relatório gerado automaticamente por um agente de IA como prova de conceito. Não substitui boletins oficiais nem avaliação de profissionais de saúde, e não contém orientação médica individual.
 
 ## Resumo executivo
 
-Até 25/06/2025, os casos notificados nos últimos 7 dias variaram −35,9% em relação à semana anterior e +0,4% na comparação de 30 dias. A letalidade hospitalar foi de 8,5%, 26,9% dos internados com informação foram para UTI e 46,2% tinham vacina contra covid-19 comprovada.
+O cenário de SRAG até 25/06/2025 mostra redução expressiva na taxa semanal de notificações (-35,89%), enquanto a taxa mensal permanece praticamente estável (+0,36%). A letalidade hospitalar no período de 30 dias é de 8,48%. O proxy de internação em UTI indica 26,95% dos casos com informação preenchida, e o proxy de vacinação contra covid-19 aponta 46,25% dos casos com registro de primeira dose. As notícias disponíveis referem-se a novembro de 2026, período posterior aos dados aqui analisados.
 
 ## Métricas
 
@@ -19,11 +19,11 @@ Até 25/06/2025, os casos notificados nos últimos 7 dias variaram −35,9% em r
 | Taxa de vacinação contra covid-19 (proxy: % dos casos com vacina comprovada) | 46,2% | 21.399 | 46.264 |
 ## Análise
 
-- **Taxa de aumento de casos (7 dias)**: Definição: (casos notificados nos últimos 7 dias / casos dos 7 dias anteriores) - 1. Período: 19/06/2025 a 25/06/2025 vs 12/06/2025 a 18/06/2025.
-- **Taxa de aumento de casos (30 dias)**: Definição: (casos notificados nos últimos 30 dias / casos dos 30 dias anteriores) - 1. Período: 27/05/2025 a 25/06/2025 vs 27/04/2025 a 26/05/2025.
-- **Taxa de mortalidade (letalidade hospitalar por SRAG)**: Definição: óbitos por SRAG / casos com evolução conhecida (cura ou óbito). Período: 27/05/2025 a 25/06/2025.
-- **Taxa de ocupação de UTI (proxy: % de internados que foram para UTI)**: Definição: casos internados em UTI / casos com a informação de UTI preenchida (Sim ou Não). Período: 27/05/2025 a 25/06/2025.
-- **Taxa de vacinação contra covid-19 (proxy: % dos casos com vacina comprovada)**: Definição: casos com vacina covid 'Sim' E data da 1ª dose registrada / casos com Sim ou Não informado. Período: 27/05/2025 a 25/06/2025.
+- **Taxa de aumento de casos (7 dias)**: A queda de 35,89% nas notificações da semana mais recente (6.698 casos) frente à anterior (10.448) sugere redução de transmissão ou de notificação. Fins de semana e feriados podem subestimar os registros mais recentes, devendo-se aguardar consolidação antes de confirmar tendência de queda.
+- **Taxa de aumento de casos (30 dias)**: A variação de +0,36% no acumulado de 30 dias (46.845 vs 46.678) indica estabilidade no volume de notificações no período mais amplo, contrastando com a queda semanal pontual.
+- **Taxa de mortalidade (letalidade hospitalar por SRAG)**: A letalidade hospitalar de 8,48% (2.029 óbitos em 23.927 casos com evolução conhecida) reflete a gravidade dos casos notificados no período de 30 dias encerrado em 25/06/2025.
+- **Taxa de ocupação de UTI (proxy: % de internados que foram para UTI)**: O proxy de 26,95% (10.673 de 39.608 casos com informação de UTI preenchida) representa a proporção de casos internados que necessitaram de UTI, não a taxa de ocupação de leitos da rede hospitalar.
+- **Taxa de vacinação contra covid-19 (proxy: % dos casos com vacina comprovada)**: O proxy de 46,25% (21.399 de 46.264 casos com informação vacinal) indica a proporção de casos de SRAG com registro de primeira dose de vacina covid-19, não a cobertura vacinal da população geral.
 ## Gráficos
 
 ![Casos diários](casos_diarios_30d.png)
@@ -32,7 +32,7 @@ Até 25/06/2025, os casos notificados nos últimos 7 dias variaram −35,9% em r
 
 ## Contexto das notícias
 
-Texto padrão gerado sem LLM: as notícias abaixo foram coletadas automaticamente e não foram interpretadas.
+As 12 notícias listadas são de novembro de 2026 (buscadas em 13/11/2026) e relatam aumento de casos graves de covid-19 e SRAG naquele momento [1][2][3][4][5][6][7][8][9][10][11][12]. Como os dados do relatório referem-se a junho de 2025, as notícias descrevem cenário epidemiológico posterior e não explicam as métricas aqui apresentadas.
 
 1. [Casos graves de Covid-19 dão sinal de crescimento no Brasil, aponta Fiocruz](https://news.google.com/rss/articles/CBMirwFBVV95cUxNYkxXVDYydDF6MklRNTlnSWNqVkFHcDBqdDhDdzhBSHhUb0FpWk5WalRWOUYwVlVITm9pR3ZsVS1YVGpDbWN5M3I0UDV1ZVFYdlQwUGY3OEtSV09CZHJCajhJR2Z6UnBUQkFnVkdxLVktMEtHajFfTHA1OEVUREhhbEE0TlQzUTM3S2kzalY0WEJkT25tR2drVEhyTlZXcmJyYzlRM1JkdEVQTm9HX1BB?oc=5) - CNN Brasil, 13/11/2026
 2. [Casos de Covid-19 apresentam aumento no Brasil, aponta boletim da Fiocruz](https://news.google.com/rss/articles/CBMinwFBVV95cUxQN3pabm9mWmNZQlVrS1p3SjZZUFJoMzhqczc1SWFQSFU3NEJ1cjNFclo1ZVhTR0t2eVpDY1MwMjdWNWExMlhmRlp5RmdSVllnRHBJYXM3T2xPRnVnbHh5WFJKZDVmc3ljT1V5eXVoVlRwcFJkVTh3X1JzckpwSTFWNzh2UDZieldUZGRGcGh5Y0RoejRsUzFzUXpMQTQxRlU?oc=5) - Fala Matão, 13/11/2026
@@ -46,22 +46,12 @@ Texto padrão gerado sem LLM: as notícias abaixo foram coletadas automaticament
 10. [Alta de casos de SRAG no boletim InfoGripe motiva alerta de pneumologista da Santa Casa de Mauá](https://news.google.com/rss/articles/CBMif0FVX3lxTE8yWlByMGZYSXN1NnFfSExxYVU0b1FuMkNLc1k3WEpaVUlVV1Y4UkI1MlpwUHBMQmh4X0ZrNEF2U0RqYU5BTTAzSVltUTB4UktPV3NHV2xmQUZmYVFmTE9RVl9RdmJYV3FpWUlWcmtPeW9ZUWs5d0pxN2E3TzNVeE0?oc=5) - ABC Agora, 12/11/2026
 11. [Casos de Síndrome Respiratória Grave (SRAG) devem aumentar, diz boletim da Fiocruz](https://news.google.com/rss/articles/CBMi5gFBVV95cUxNS29MdUJPTXdvLXZZZUdnSDM0RGpXSzd1S3ZNTzJEeWJVMDlpQ21QeFVlVmZwSm5PSl9FbTNUVnpYVE82czZwbWduXzAxTHRPM2tId1lrS1AtUFhDU1RsVmozMnlrVDdzaGh0N0lzRnVYY0I2RkFOY21yaEx3NVJVT0FOcjNtZXhVZURaRVVCZG1uUEw4czdLcDkxbVRCRXlvR2l1cVFzQlpSZDQzVFZROTZsRFQwalBXcnZwVVlTVGl0R3JjZ3MxR2Y4WDJYN2d6aFdFUTFZYWFJSUlONDFNZmhyRC04dw?oc=5) - Diario de Pernambuco, 11/11/2026
 12. [InfoGripe: casos de SRAG por metapneumovírus, rinovírus e Covid-19 crescem no país](https://news.google.com/rss/articles/CBMiygFBVV95cUxQM1U1VzYzemh2R3JTem8yTVNxV09rRGV3LVBHQ1RLaW5qX0ZSZGdqUXh2UTlqRFFDMEdMeGFtbUR6SGJxQkdlTnNQTzk1enJ6Y0tPLWdvNDlyTHkycVN0bkZMX3oyMXB2Rkd2WXdUODFKYTRpc1JMamJuZTJCX3BjaW80OWNlQjBGRkZOS3ZKQ0JYOWNNUUFqNGpQY0hTQUJ2M284Yk9CdjFUNVlXMUNoS1NTYjNVendHUzlKZUtaMkpHQzY5dzBqc0VB?oc=5) - Portal do Marcos Santos, 07/11/2026
-13. [SRAG aumenta em cinco estados; Mato Grosso registra maior alta](https://news.google.com/rss/articles/CBMigwFBVV95cUxQazYyV1N4RTZwV05QZ2FkUEEyWEp4bWJrNno2X21iVm1BQjhXVkJkRzBObnVVaVM2ZzNZc2ljYzVGZ0prVVB1RWNTNzVJLXpvbTZjV044eXd3QkRCZDd1dE10ZVdXQndZa3cyWXFVX2djQzNRNDB5ZWtOakVUUHlDdEp3MA?oc=5) - 93 Notícias, 07/11/2026
-14. [Boletim InfoGripe aponta aumento de casos de SRAG por vírus em SC](https://news.google.com/rss/articles/CBMimgFBVV95cUxQQmllWUc4a2xzSjNGTlVXU0ZUWDRvWE5GZ1RlTFVHZ1JZTHNRS3Rtd19vcC1VRmNXRURieGtJcm91Sjd3YVJReWJNMkdfX2p5SEEzeU82YnN0TVN1NlJpdEVpMnBLVVpSVURxVTc1Y0RBRzRQRUZoVFFSM3hwMjJEeEJBeHpXMnhFb3hEVllBTUI1RGlqekJzT3B3?oc=5) - ND Mais, 06/11/2026
-15. [InfoGripe: cresce o número de casos de SRAG por metapneumovírus, rinovírus e Covid-19](https://news.google.com/rss/articles/CBMiugFBVV95cUxObHh0U3RER2pBbURDVDJLdEdQVWxEckxkdURVTjRyNUx1c2FGZHZucTVQMjhVQUNzTzlSbTRZQUhfQ3JfbEFCS1ZVVVhOY1dEMkFTcEFFYUI4OFc4QjdMdEprZlRadFFaOU9xRm4ybWo0VTI5dTdwSHQ0UDNZSTg2cFRuTGZJbGdZcW1SR3BtRWw3Q25jUWFWYnppQVBJQ0R5VVNGSXNEb2VmUmsteDZCQ1RybjVfOGg5Umc?oc=5) - Fundação Oswaldo Cruz (Fiocruz), 05/11/2026
-16. [Casos de Síndrome Respiratória Aguda Grave em Sergipe estão em nível de alerta, aponta InfoGripe](https://news.google.com/rss/articles/CBMijwFBVV95cUxNdkRIWjlIV2dYMkFuaGpMeDkzcHcwMU5zYXdtbkVHZzNickZLMEQxQnh4NTNTT2J1cF9vSnNZcjlVNURKeFNWLUJJQmN0eHREWUdsREdFWk5uRjhoOHhfbUxNSC1EWlpwWmpMbThwUk9XdFF6aWJTelVxeG5WdTZMYTMxMTFHWTY2SjZCYVlrb9IBngFBVV95cUxOeG8tbUV2N2hvMmNqRjBDRkp1LWpXRGdTYW5OQURxU2tjRE11TVJmVmVLZUN5M2RwYlpmMUNkbHVENERDdEtQNXlSXzJqSkZuWXRKTlBiUFlWa3VwcFRtVmRacjFpOEo1bHZHdWhKUnJuWGRORklJMGpWV294OWdaaW5YS3RhVnFXejRmUWhHUmdZUDh3dS1WRmNQMW50Zw?oc=5) - G1, 05/11/2026
-17. [Três cidades do Vale do Aço registraram 60 casos de covid-19 em 2026](https://news.google.com/rss/articles/CBMitAFBVV95cUxOZzREZzZlMDJxWkJESzZnX0VQVkk0M1dkbWZwd1Q4dEtyMzkwdzdhUkM0ZmJmNzNlMzhUN195eEN1M1lCdXFORzduMVhTd0QwS3BLUmlTbVJna2xnTl90Vi14NjhCOTFJLURONDA0dkVNQXYwWEVlOURyRkZFb19aaGxlb21Bb2w5WUhXem9RWnJLU01zSXpURm9XSjR5a2ZFc3NncmpwZ3ROVW55MmhEcnZJdEg?oc=5) - Portal Diário do Aço, 12/11/2026
-18. [ABC soma 103 casos de SRAG por covid em 2026; 56% exigem internação em UTI](https://news.google.com/rss/articles/CBMiwAFBVV95cUxPWGEyT24xc3dzcXNVUkFBSGpOUVRjb253ZG8wYkpyZTI1TVJmeTBZVGp5VmFiVnFSZ0ZuZWJPbHBRX1d6bzFuNVNUVDhtUDZfR1FIMkRRVzFjUmhMRFN0eUtjbE92Z2QxY05rVUgzY2ktRGRVNGxnVmQ5eWhwRjlIeVp5TF9VVTlPZ0NqX19kVUtkZDFtRUlwazFMNDRzNlZtbzctZExWaXpMM09OUEtQc0M0YkJWRUUxODVycUFSc0c?oc=5) - Repórter Diário, 10/11/2026
-19. [Covid-19 volta a crescer no Brasil? 19 estados apresentam tendência de alta](https://news.google.com/rss/articles/CBMiswFBVV95cUxNQ3A5X1Z2WnIxY01aU3EwODZPbE01NEJCTkhrVW0yZmgzcWk2S3RwZXROSFNjWF8wNkxKSkZMb01nc21pelNDdko5REFibUpsSm8zOFRBTHJySm83SGNUemNuRjNrcjhmRUxxcmZFR2xnem5oWms0SFpYT1JIYngzWWE0czRsN2tPYl9SMVdzUm5hMFVUYmFRN0ZlR1RNNGJzOTRGMnUxcVdQUlhlRmdqZG9qYw?oc=5) - Site da Granja, 10/11/2026
-20. [Com mais de 400 internações em UTI, SP registra alta de casos de Covid-19](https://news.google.com/rss/articles/CBMiowFBVV95cUxPTTJRY3ZNd3lJRXg0UTZ3OEFzNDdOSjZPVnhqQWxNc2Z1T0loTHhDcks3NFhFTU9WYzZKYUo4dlpVMWtOM1hFaXdXSUFEbHBWVmhBSWtjTW53YVhmQU9IODBfVkFxWWVJQlg5SENoeElQVUtvazVCSWJFQkNKYnlLSF9FNFBCeHVHX1ZYV1cxVEdDVjBKeEpYd09IUlZyQjdRY3Zz?oc=5) - Portal NN1, 09/11/2026
-21. [Volta da covid? Hospitais privados de SP relatam alta de casos da doença após alerta da Fiocruz](https://news.google.com/rss/articles/CBMi_gFBVV95cUxQMktQTFVpYjR0MTJRZVA4SmZrOThvSW90UmlWZEtIaVZEN0dSWHFMbmMxcG94bjdhQWdKSVV3ekdQTEx5NnFJT3hScGw2M0R4THlscEd2SjdtWTFBWUhiMTNBNGxTeXp1ci12TFptYW1rbnFZQjdNTTNibUlST1VYY3ZsbUEzV1VQcUpiSUp5R3ptNmcxQU85NkM5dlNXZnFDUXJ1cmM0MkdTbGZic1JuWUVhUnB0UXZvWTZmMG5EZUNBZ00wazNUZGxMZjBsVzdrOGxPZjNwbmQwUmEwZW93NmN6ZGl1TThzbkFBa3dldEk5WkV3dEVXcElFRFROdw?oc=5) - UOL Notícias, 09/11/2026
-22. [Covid-19: casos aumentam há seis semanas no Brasil, e Fiocruz aponta alta nas internações](https://news.google.com/rss/articles/CBMi2AFBVV95cUxQUVhLbExuVmI5T3R6RTdNSjg4SmhXNWtyYzNuTGUtUGl3a1lzS2pHTVJYWW84cHRXbWJ3QkRBaUJCbTdXclNGZlB4SFd5MWgyYWxna09XN3ZFRHc0Nm1nUlQybnBUSk9uMDVKaTVUZkxoRlo5Q0o2MnB1MmtmOW1FUnF5V2NyT01xektjMURMYWVDRUtRb2RzX2ZHNWFqT2VXWE1kQXFuRzlOTXpmMjJHNnFqODlCdEZOd01JMEU3OG5rSGd2TTZtdU01OGlpSGFLUlR3RFA3YUo?oc=5) - Bastos Já, 09/11/2026
-23. [Santa Catarina é um dos cinco estados com aumento de internações por covid-19](https://news.google.com/rss/articles/CBMivgFBVV95cUxNemdERUF3OWZYaUg0NEFiTmJfZlBzeE1JRDQ4b3BCVXNSWnhlQ1lja00zeHNCX09HT1BhcVVJVDc0MXlSUTMyQWhJMS16RlhmQmFHQlZtUm5nUXBWcGg4N0ZEUk9MYThnT3Y5UmpfTlVQUDJXQ1RLT3dwUkMzb0oyVUFYWkRnV3htVkFBczFwaTlUREcxMmdDeVlubGhpeGZFSzc2aGViRFg2N21zdkhCWUo0OEJrR3ZLQmc0YzRB?oc=5) - Canoinhas Online, 07/11/2026
-24. [Casos de Covid-19 aumentam há seis semanas no Brasil e internações preocupam](https://news.google.com/rss/articles/CBMie0FVX3lxTE1yRnU2ZHdianhTUUNkcVgxdWxJYkRXay1ubjNZX2U5NDhmNlpBX1dEcGJkVG9sYTU4SzlfVEJzV2g2cU5PUnFTc2poUUdwM2hsaTJNZGxZTWtVajdlVGMweFR0TWVpLUZLVUJUUXB6b2dGQ09PamxnMVVKYw?oc=5) - Jornal da Orla, 07/11/2026
 ## Pontos de atenção
 
-- Quedas nos dias mais recentes podem refletir atraso de notificação, fins de semana e feriados.
-- UTI e vacinação são aproximações; consulte as definições antes de comparar com outras fontes.
+- Consolidar notificações das semanas mais recentes antes de confirmar tendência de queda, considerando atrasos e efeito de fim de semana.
+- Monitorar a letalidade hospitalar (8,48%) e comparar com séries históricas para detectar mudanças na gravidade ou no perfil dos casos.
+- Interpretar os proxies de UTI (26,95%) e vacinação (46,25%) com cautela: não representam ocupação de leitos nem cobertura populacional.
+- Acompanhar a estabilidade no acumulado de 30 dias (+0,36%) frente à queda semanal (-35,89%) para identificar possíveis mudanças de padrão.
 ## Limitações
 
 - O arquivo disponibilizado cobre de 29/12/2024 a 26/06/2025; o gráfico de 12 meses mostra os meses anteriores como fora do arquivo.
