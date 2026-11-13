@@ -96,12 +96,15 @@ class LLMRoteirizado:
 
         class _Redator:
             def invoke(self, _mensagens):
-                return llm.respostas_redator.pop(0)
+                return {"raw": AIMessage(""), "parsed": llm.respostas_redator.pop(0), "parsing_error": None}
 
         return _Redator()
 
     def invoke(self, _mensagens):
-        return self.respostas_orquestrador.pop(0)
+        resposta = self.respostas_orquestrador.pop(0)
+        if isinstance(resposta, Exception):
+            raise resposta
+        return resposta
 
 
 def _chamada(nome: str, args: dict | None = None, id_: str = "1") -> dict:
@@ -205,3 +208,10 @@ def test_modo_sem_llm_gera_relatorio_com_texto_padrao(tmp_path):
     estado, trilha = _executar(None, tmp_path)
     assert estado["origem_texto"] == "padrao"
     assert estado["relatorio"] == {"html": "r.html"}
+
+
+def test_falha_do_provedor_no_orquestrador_nao_derruba_o_relatorio(tmp_path):
+    llm = LLMRoteirizado([ConnectionError("provedor fora do ar")], [_comentario("Letalidade de 8,48%.")])
+    estado, trilha = _executar(llm, tmp_path)
+    assert estado["origem_texto"] == "llm"
+    assert trilha.eventos_do_tipo("erro_llm")[0]["etapa"] == "orquestrador"

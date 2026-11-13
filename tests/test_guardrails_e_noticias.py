@@ -97,14 +97,21 @@ def test_mascaramento_de_dados_pessoais():
 def test_provedor_do_llm_e_detectado_pela_chave_configurada(monkeypatch):
     from srag_agent.agente import llm
 
-    for variavel in ["LLM_PROVEDOR", "LLM_MODELO", "GROQ_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY", "GITHUB_TOKEN"]:
+    for variavel in [
+        "LLM_PROVEDOR",
+        "LLM_MODELO",
+        "GROQ_API_KEY",
+        "GOOGLE_API_KEY",
+        "OPENAI_API_KEY",
+        "OPENROUTER_API_KEY",
+    ]:
         monkeypatch.delenv(variavel, raising=False)
-    monkeypatch.setenv("GITHUB_TOKEN", "teste")
-    assert llm.descrever_configuracao()["modelo"] == "openai/gpt-4.1-mini"
     monkeypatch.setenv("GOOGLE_API_KEY", "teste")
     assert llm.descrever_configuracao()["provedor"] == "google"
     monkeypatch.setenv("GROQ_API_KEY", "teste")
     assert llm.descrever_configuracao() == {"provedor": "groq", "modelo": "openai/gpt-oss-120b", "temperatura": 0.2}
+    monkeypatch.setenv("OPENROUTER_API_KEY", "teste")
+    assert llm.descrever_configuracao()["modelo"] == "openrouter/free"
     monkeypatch.setenv("LLM_PROVEDOR", "openai")
     with pytest.raises(llm.LLMNaoConfiguradoError):
         llm.criar_llm()

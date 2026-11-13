@@ -29,7 +29,7 @@ h2 { font-size: 13px; margin: 0 0 6px; padding-bottom: 4px; border-bottom: 2px s
 <!-- ======================= PÁGINA 1: VISÃO GERAL ======================= -->
 <section class="pagina">
 <h1>Arquitetura da solução - Agente de relatórios de SRAG</h1>
-<div class="sub">Prova de conceito Indicium HealthCare · LangGraph + LLM (GitHub Models/Groq/Gemini/OpenAI) · Os números são calculados por ferramentas determinísticas; o LLM decide e escreve, mas não calcula.</div>
+<div class="sub">Prova de conceito Indicium HealthCare · LangGraph + LLM via OpenRouter (trocável: Groq, Gemini, OpenAI) · Os números são calculados por ferramentas determinísticas; o LLM decide e escreve, mas não calcula.</div>
 
 <svg viewBox="0 0 1100 600" xmlns="http://www.w3.org/2000/svg">
   <defs>
@@ -172,7 +172,7 @@ h2 { font-size: 13px; margin: 0 0 6px; padding-bottom: 4px; border-bottom: 2px s
   <g>
     <rect x="862" y="28" width="218" height="200" rx="10" fill="#f0eefc" stroke="#6250d6" stroke-width="1.5"/>
     <text x="876" y="51" font-size="13" font-weight="700" fill="#6250d6">LLM</text>
-    <text x="876" y="67" font-size="10.5" fill="#52514e">GitHub Models (padrão), Groq, Gemini</text>
+    <text x="876" y="67" font-size="10.5" fill="#52514e">OpenRouter (padrão), Groq, Gemini</text>
     <text x="876" y="80" font-size="10.5" fill="#52514e">ou OpenAI · trocável · temperatura 0,2</text>
     <text x="876" y="104" font-size="10.5" font-weight="700">Interações</text>
     <text x="876" y="120" font-size="10.5">① decide ferramentas e consultas</text>
@@ -213,7 +213,7 @@ h2 { font-size: 13px; margin: 0 0 6px; padding-bottom: 4px; border-bottom: 2px s
 
       <text x="862" y="554" font-weight="700">Dados sensíveis (LGPD)</text>
       <text x="862" y="569" fill="#52514e">minimização no ETL · LLM só vê agregados</text>
-      <text x="862" y="583" fill="#52514e">· sem chaves no código (GITHUB_TOKEN/Secrets)</text>
+      <text x="862" y="583" fill="#52514e">· chaves no .env / GitHub Secrets</text>
     </g>
   </g>
 </svg>

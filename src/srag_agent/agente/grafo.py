@@ -67,6 +67,12 @@ FERRAMENTAS = [consultar_metricas, gerar_graficos_relatorio, buscar_noticias_sra
 NOMES_PERMITIDOS = {ferramenta.name for ferramenta in FERRAMENTAS}
 
 
+def _modelo_da_resposta(mensagem) -> str | None:
+    """Nome do modelo que de fato respondeu (o OpenRouter pode escolher entre vários)."""
+    metadados = getattr(mensagem, "response_metadata", None) or {}
+    return metadados.get("model_name") or metadados.get("model")
+
+
 # ---------- Saída estruturada do redator ----------
 
 
@@ -157,12 +163,17 @@ class AgenteSRAG:
             SystemMessage(prompts.ORQUESTRADOR),
             HumanMessage("Reúna os insumos para o relatório de SRAG."),
         ]
-        resposta = self.llm.bind_tools(FERRAMENTAS).invoke(mensagens)
+        try:
+            resposta = self.llm.bind_tools(FERRAMENTAS).invoke(mensagens)
+        except Exception as erro:  # falha do provedor: o sistema segue com os insumos obrigatórios
+            self.trilha.registrar("erro_llm", etapa="orquestrador", erro=repr(erro))
+            resposta = AIMessage("CONCLUIDO")
         chamadas = [{"ferramenta": c["name"], "argumentos": c["args"]} for c in resposta.tool_calls]
         self.trilha.registrar(
             "decisao_llm",
             etapa="orquestrador",
             rodada=estado.get("rodadas", 0) + 1,
+            modelo_que_respondeu=_modelo_da_resposta(resposta),
             chamadas_de_ferramenta=chamadas,
             texto=resposta.content,
         )
@@ -265,9 +276,12 @@ class AgenteSRAG:
         )
 
         try:
-            comentario = self.llm.with_structured_output(ComentarioRelatorio, method="function_calling").invoke(
-                [SystemMessage(sistema), HumanMessage(entrada)]
-            )
+            resultado = self.llm.with_structured_output(
+                ComentarioRelatorio, method="function_calling", include_raw=True
+            ).invoke([SystemMessage(sistema), HumanMessage(entrada)])
+            comentario = resultado["parsed"]
+            if comentario is None:
+                raise ValueError(f"Saída fora do formato esperado: {resultado.get('parsing_error')!r}")
         except Exception as erro:
             self.trilha.registrar("erro_llm", etapa="redigir", tentativa=tentativas, erro=repr(erro))
             return {"violacoes": [f"Falha na chamada ao LLM: {type(erro).__name__}"], "tentativas_redacao": tentativas}
@@ -277,6 +291,7 @@ class AgenteSRAG:
             "decisao_llm",
             etapa="redigir",
             tentativa=tentativas,
+            modelo_que_respondeu=_modelo_da_resposta(resultado.get("raw")),
             hash_prompt_sistema=hash_texto(sistema),
             hash_entrada=hash_texto(entrada),
             aprovado=not violacoes,

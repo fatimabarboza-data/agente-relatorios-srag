@@ -79,8 +79,9 @@ O agente é um **grafo de estados em LangGraph**:
 - **Grafo explícito em vez de agente "livre":** o LLM tem autonomia onde ela agrega valor (escolher buscas e
   interpretar), e o fluxo crítico (insumos obrigatórios, validação, montagem) é determinístico e testável.
 - **Separar cálculo de redação** elimina a principal fonte de erro de LLMs em relatórios: números inventados.
-- **LLM trocável:** GitHub Models por padrão (`openai/gpt-4.1-mini`), que no GitHub Actions usa o token
-  automático do workflow, sem nenhuma chave cadastrada. Groq, Gemini ou OpenAI com uma linha no `.env`.
+- **LLM trocável:** OpenRouter por padrão (chave gratuita, sem cartão; o roteador `openrouter/free` escolhe um
+  modelo gratuito com suporte a tool calling e saída estruturada). Groq, Gemini ou OpenAI com uma linha no `.env`.
+  O modelo que efetivamente respondeu fica registrado na trilha de auditoria.
 - **Google Notícias via RSS:** dispensa cadastro e chave, então qualquer pessoa consegue reproduzir o projeto.
 - **SQLite:** o desafio pede um banco consultado pelo agente; o SQLite não exige servidor e permite abrir a
   conexão em modo somente leitura.
@@ -89,10 +90,10 @@ O agente é um **grafo de estados em LangGraph**:
 
 ### Opção A — no GitHub, sem instalar nada (recomendado)
 
-1. Em **Actions → Gerar relatório SRAG → Run workflow**. Não é preciso cadastrar chave: o workflow usa o
-   GitHub Models com o token automático do próprio GitHub (permissão `models: read`).
-2. (Opcional) Para usar outro LLM, crie a variável `LLM_PROVEDOR` (`groq`, `google` ou `openai`) e o secret
-   com a chave correspondente em **Settings → Secrets and variables → Actions**.
+1. Em **Settings → Secrets and variables → Actions**, crie o secret `OPENROUTER_API_KEY` (chave gratuita, sem
+   cartão, em [openrouter.ai/keys](https://openrouter.ai/keys)). Também funciona com `GROQ_API_KEY`,
+   `GOOGLE_API_KEY` ou `OPENAI_API_KEY`: o provedor é detectado pela chave cadastrada.
+2. Em **Actions → Gerar relatório SRAG → Run workflow**.
 3. O relatório fica disponível como artefato da execução e é publicado em `docs/exemplo_relatorio/`.
 
 O mesmo workflow roda sozinho toda segunda-feira às 8h (Brasília). O workflow **Qualidade** roda lint e
@@ -109,7 +110,7 @@ python -m venv .venv
 # Windows: .venv\Scripts\activate   |   Linux/Mac: source .venv/bin/activate
 pip install -r requirements-dev.txt
 
-cp .env.example .env        # e preencha a chave do provedor (ex.: GITHUB_TOKEN)
+cp .env.example .env        # e preencha OPENROUTER_API_KEY
 python -m srag_agent        # com LLM
 python -m srag_agent --sem-llm   # sem LLM, para testar o pipeline
 pytest -q                   # testes
@@ -198,7 +199,7 @@ Outras medidas:
 - Pacote Python com responsabilidades separadas: `dados` (ETL), `ferramentas` (tools), `agente` (grafo, prompts,
   relatório) e `governanca` (auditoria e guardrails). O layout do relatório fica em templates Jinja2.
 - Configuração centralizada (`config.py`, `.env`), type hints e docstrings explicando o **porquê** das decisões.
-- **28 testes automatizados** (`pytest`), incluindo o fluxo do agente com um LLM roteirizado: ferramenta
+- **29 testes automatizados** (`pytest`), incluindo o fluxo do agente com um LLM roteirizado: ferramenta
   obrigatória esquecida, número inventado, correção, reserva, ferramenta proibida e busca fora do tema.
 - `ruff` para lint e formatação, e **CI no GitHub Actions** a cada push.
 

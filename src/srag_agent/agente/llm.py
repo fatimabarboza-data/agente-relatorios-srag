@@ -1,14 +1,14 @@
 """Criação do LLM a partir do .env, sem amarrar o projeto a um fornecedor.
 
 Variáveis:
-- LLM_PROVEDOR: "github", "groq", "google" ou "openai". Se não for informado,
-  usa o primeiro provedor que tiver chave configurada (groq, google, openai, github).
+- LLM_PROVEDOR: "openrouter", "groq", "google" ou "openai". Se não for informado,
+  usa o primeiro provedor que tiver chave configurada (nessa ordem).
 - LLM_MODELO: opcional; cada provedor tem um modelo padrão.
-- Chaves: GROQ_API_KEY / GOOGLE_API_KEY / OPENAI_API_KEY / GITHUB_TOKEN.
+- Chaves: OPENROUTER_API_KEY / GROQ_API_KEY / GOOGLE_API_KEY / OPENAI_API_KEY.
 
-GitHub Models: dentro do GitHub Actions, o token automático do próprio workflow
-(GITHUB_TOKEN, com a permissão "models: read") já dá acesso ao LLM. Ou seja,
-o relatório roda na nuvem sem nenhuma chave cadastrada por nós.
+OpenRouter (padrão): uma chave gratuita, sem cartão. O modelo "openrouter/free"
+escolhe um modelo gratuito que suporte o que a chamada precisa (tool calling e
+saída estruturada); o modelo que respondeu fica registrado na auditoria.
 
 Temperatura baixa: o relatório é técnico, queremos respostas estáveis.
 """
@@ -18,21 +18,21 @@ import os
 from langchain_core.language_models import BaseChatModel
 
 MODELO_PADRAO = {
-    "github": "openai/gpt-4.1-mini",
+    "openrouter": "openrouter/free",
     "groq": "openai/gpt-oss-120b",
     "google": "gemini-flash-latest",
     "openai": "gpt-4o-mini",
 }
 VARIAVEL_CHAVE = {
+    "openrouter": "OPENROUTER_API_KEY",
     "groq": "GROQ_API_KEY",
     "google": "GOOGLE_API_KEY",
     "openai": "OPENAI_API_KEY",
-    "github": "GITHUB_TOKEN",
 }
 # Provedores que usam a API no formato da OpenAI, só com outro endereço
 URL_COMPATIVEL_OPENAI = {
     "groq": "https://api.groq.com/openai/v1",
-    "github": "https://models.github.ai/inference",
+    "openrouter": "https://openrouter.ai/api/v1",
 }
 TEMPERATURA = 0.2
 
@@ -45,7 +45,7 @@ def _provedor_escolhido() -> str:
     escolhido = os.getenv("LLM_PROVEDOR", "").strip().lower()
     if escolhido:
         return escolhido
-    return next((provedor for provedor, chave in VARIAVEL_CHAVE.items() if os.getenv(chave)), "groq")
+    return next((provedor for provedor, chave in VARIAVEL_CHAVE.items() if os.getenv(chave)), "openrouter")
 
 
 def descrever_configuracao() -> dict:
@@ -61,7 +61,9 @@ def criar_llm() -> BaseChatModel:
     configuracao = descrever_configuracao()
     provedor, modelo = configuracao["provedor"], configuracao["modelo"]
     if provedor not in VARIAVEL_CHAVE:
-        raise LLMNaoConfiguradoError(f"LLM_PROVEDOR desconhecido: {provedor!r} (use github, groq, google ou openai)")
+        raise LLMNaoConfiguradoError(
+            f"LLM_PROVEDOR desconhecido: {provedor!r} (use openrouter, groq, google ou openai)"
+        )
     chave = os.getenv(VARIAVEL_CHAVE[provedor])
     if not chave:
         raise LLMNaoConfiguradoError(f"Defina {VARIAVEL_CHAVE[provedor]} no arquivo .env")
