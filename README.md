@@ -97,8 +97,11 @@ O agente é um **grafo de estados em LangGraph**:
 3. O relatório fica disponível como artefato da execução e é publicado em `docs/exemplo_relatorio/`.
 
 O workflow **Qualidade** roda lint e testes a cada push. O exemplo em `docs/exemplo_relatorio/` foi gerado por
-esse workflow, com LLM e notícias reais; a trilha de auditoria da execução mostra inclusive um guardrail em ação
-(a primeira versão do texto citou números sem origem, foi reprovada e corrigida pelo próprio agente).
+esse workflow, com LLM e notícias reais.
+
+**Guardrail em ação:** em [`docs/trilha_exemplo_guardrail_em_acao.jsonl`](docs/trilha_exemplo_guardrail_em_acao.jsonl)
+está a trilha de uma execução real em que a primeira versão do texto citou números sem origem nas ferramentas
+(eventos 13 a 16). O guardrail reprovou, o LLM recebeu os motivos e a segunda versão foi aprovada (evento 17).
 
 ### Opção B — no computador
 
