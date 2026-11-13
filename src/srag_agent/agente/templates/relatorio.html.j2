@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relatório SRAG - {{ referencia }}</title>
+<style>
+:root { --texto:#0b0b0b; --sec:#52514e; --linha:#e4e3df; --fundo:#fcfcfb; }
+* { box-sizing:border-box; }
+body { font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif; color:var(--texto); background:#fff;
+       margin:0; line-height:1.55; font-size:14px; }
+main { max-width:960px; margin:0 auto; padding:40px 32px 56px; }
+header { border-bottom:2px solid var(--texto); padding-bottom:16px; margin-bottom:24px; }
+.marca { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--sec); }
+h1 { font-size:26px; margin:6px 0 4px; }
+h2 { font-size:17px; margin:32px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--linha); }
+.meta, .fonte { color:var(--sec); font-size:12.5px; }
+.aviso { background:#fff8e6; border-left:3px solid #eda100; padding:10px 14px; font-size:12.5px; color:#3d3a33; }
+.cartoes { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin:8px 0 4px; }
+.cartao { background:var(--fundo); border:1px solid var(--linha); border-radius:8px; padding:14px; }
+.cartao-titulo { font-size:12px; color:var(--sec); min-height:34px; }
+.cartao-valor { font-size:28px; font-weight:700; margin:4px 0 2px; font-variant-numeric:tabular-nums; }
+.cartao-detalhe { font-size:12px; font-variant-numeric:tabular-nums; }
+.cartao-nota { font-size:11px; color:var(--sec); margin-top:6px; }
+figure { margin:12px 0 20px; }
+figure img { width:100%; border:1px solid var(--linha); border-radius:6px; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; }
+th, td { text-align:left; padding:7px 8px; border-bottom:1px solid var(--linha); vertical-align:top; }
+th { color:var(--sec); font-weight:600; }
+td.num { text-align:right; font-variant-numeric:tabular-nums; white-space:nowrap; }
+ol.noticias li { margin-bottom:6px; }
+.gov { background:var(--fundo); border:1px solid var(--linha); border-radius:8px; padding:12px 16px; font-size:12.5px; }
+footer { margin-top:36px; color:var(--sec); font-size:11.5px; border-top:1px solid var(--linha); padding-top:10px; }
+@media print { main { padding:0; } h2 { break-after:avoid; } figure, .cartoes, table { break-inside:avoid; } }
+@media (max-width:760px) { .cartoes { grid-template-columns:repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div class="marca">Indicium HealthCare · Prova de conceito</div>
+  <h1>Relatório de Síndrome Respiratória Aguda Grave (SRAG)</h1>
+  <div class="meta">
+    Dados até <strong>{{ referencia }}</strong> (Open DATASUS) · Notícias coletadas em {{ gerado_em }}
+    · Execução {{ id_execucao }}
+  </div>
+</header>
+<p class="aviso">{{ aviso }}</p>
+
+<h2>Resumo executivo</h2>
+<p>{{ comentario.resumo_executivo | seguro }}</p>
+
+<h2>Indicadores</h2>
+<div class="cartoes">
+  {% for cartao in cartoes %}
+  <div class="cartao">
+    <div class="cartao-titulo">{{ cartao.titulo }}</div>
+    <div class="cartao-valor">{{ cartao.valor }}</div>
+    <div class="cartao-detalhe">{{ cartao.detalhe }}</div>
+    <div class="cartao-nota">{{ cartao.nota }}</div>
+  </div>
+  {% endfor %}
+</div>
+<p class="fonte">* Aproximações: a base não traz leitos disponíveis nem a população total. Veja as definições abaixo.</p>
+
+<h2>Análise das métricas</h2>
+<table>
+  {% for item in comentario.comentarios_metricas %}
+  <tr><td><strong>{{ item.metrica | seguro }}</strong><br>{{ item.comentario | seguro }}</td></tr>
+  {% endfor %}
+</table>
+
+<h2>Evolução dos casos</h2>
+<figure><img alt="Casos diários de SRAG nos últimos 30 dias, com média móvel de 7 dias" src="{{ grafico_diario }}"></figure>
+<figure><img alt="Casos mensais de SRAG nos últimos 12 meses" src="{{ grafico_mensal }}"></figure>
+
+<h2>Contexto das notícias</h2>
+<p>{{ comentario.contexto_noticias | seguro }}</p>
+{% if noticias %}
+<ol class="noticias">
+  {% for noticia in noticias %}
+  <li><a href="{{ noticia.link }}">{{ noticia.titulo }}</a>
+      <span class="fonte">{{ noticia.veiculo }} · {{ noticia.publicada_em | data_br }}</span></li>
+  {% endfor %}
+</ol>
+{% endif %}
+<p class="fonte">
+  Buscas realizadas:
+  {% for busca in buscas %}“{{ busca.consulta }}” ({{ busca.status }}){% if not loop.last %}; {% endif %}{% else %}nenhuma{% endfor %}.
+  Fonte: Google Notícias (RSS).
+</p>
+
+<h2>Pontos de atenção</h2>
+<ul>{% for ponto in comentario.pontos_de_atencao %}<li>{{ ponto | seguro }}</li>{% endfor %}</ul>
+
+<h2>Definições e números de origem</h2>
+<table>
+  <tr><th>Métrica</th><th>Valor</th><th>Numerador</th><th>Denominador</th><th>Definição</th><th>Período</th></tr>
+  {% for m in metricas %}
+  <tr>
+    <td>{{ m.nome }}</td><td class="num">{{ m.valor_formatado }}</td>
+    <td class="num">{{ m.numerador | inteiro }}</td><td class="num">{{ m.denominador | inteiro }}</td>
+    <td>{{ m.definicao }}</td><td>{{ m.periodo }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Limitações</h2>
+<ul>{% for item in limitacoes %}<li>{{ item }}</li>{% endfor %}</ul>
+
+<h2>Governança desta execução</h2>
+<div class="gov">
+  <strong>Origem do texto:</strong> {{ governanca.origem }}<br>
+  <strong>Modelo:</strong> {{ governanca.modelo }} · <strong>Versão dos prompts:</strong> {{ governanca.versao_prompts }}<br>
+  <strong>Ferramentas executadas:</strong> {{ governanca.ferramentas | join(", ") }}<br>
+  <strong>Eventos de guardrail:</strong> {{ governanca.eventos_guardrail }}
+  · <strong>Trilha completa:</strong> logs/{{ governanca.arquivo_log }}
+</div>
+
+<footer>
+  Fonte dos dados: Open DATASUS, SRAG Hospitalizado (SIVEP-Gripe), arquivo de 26/06/2025.
+  Dados de pacientes não são enviados ao LLM: o modelo recebe apenas indicadores agregados. Gerado em {{ gerado_em }}.
+</footer>
+</main>
+</body>
+</html>

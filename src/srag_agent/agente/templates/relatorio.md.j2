@@ -1,0 +1,45 @@
+# Relatório de SRAG
+
+Dados até **{{ referencia }}** · gerado em {{ gerado_em }} · execução `{{ id_execucao }}`
+
+> {{ aviso }}
+
+## Resumo executivo
+
+{{ comentario.resumo_executivo | seguro }}
+
+## Métricas
+
+| Métrica | Valor | Numerador | Denominador |
+|---|---:|---:|---:|
+{% for m in metricas -%}
+| {{ m.nome }} | {{ m.valor_formatado }} | {{ m.numerador | inteiro }} | {{ m.denominador | inteiro }} |
+{% endfor %}
+## Análise
+
+{% for item in comentario.comentarios_metricas -%}
+- **{{ item.metrica | seguro }}**: {{ item.comentario | seguro }}
+{% endfor %}
+## Gráficos
+
+![Casos diários](casos_diarios_30d.png)
+
+![Casos mensais](casos_mensais_12m.png)
+
+## Contexto das notícias
+
+{{ comentario.contexto_noticias | seguro }}
+
+{% for n in noticias -%}
+{{ n.indice }}. [{{ n.titulo }}]({{ n.link }}) - {{ n.veiculo }}, {{ n.publicada_em | data_br }}
+{% endfor %}
+## Pontos de atenção
+
+{% for ponto in comentario.pontos_de_atencao -%}
+- {{ ponto | seguro }}
+{% endfor %}
+## Limitações
+
+{% for item in limitacoes -%}
+- {{ item }}
+{% endfor %}

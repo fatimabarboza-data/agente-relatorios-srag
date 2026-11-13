@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Arquitetura - Agente de relatórios SRAG</title>
+<style>
+@page { size: A4 landscape; margin: 0; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif; color: #0b0b0b; }
+.pagina { width: 297mm; height: 210mm; box-sizing: border-box; padding: 9mm 11mm; page-break-after: always; position: relative; }
+.pagina:last-child { page-break-after: auto; }
+h1 { font-size: 20px; margin: 0 0 2px; }
+.sub { font-size: 11.5px; color: #52514e; margin-bottom: 6px; }
+svg { width: 100%; height: auto; display: block; }
+svg text { font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif; }
+.rodape { position: absolute; bottom: 6mm; left: 11mm; right: 11mm; font-size: 9.5px; color: #52514e;
+          display: flex; justify-content: space-between; border-top: 1px solid #e4e3df; padding-top: 4px; }
+table { border-collapse: collapse; width: 100%; font-size: 11px; }
+th, td { text-align: left; vertical-align: top; padding: 5px 7px; border-bottom: 1px solid #e4e3df; }
+th { color: #52514e; font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: .04em; }
+td:first-child { font-weight: 600; white-space: nowrap; }
+.duas { display: grid; grid-template-columns: 1.05fr 1fr; gap: 9mm; margin-top: 4mm; }
+h2 { font-size: 13px; margin: 0 0 6px; padding-bottom: 4px; border-bottom: 2px solid #0b0b0b; }
+.tag { display:inline-block; font-size:9.5px; padding:1px 6px; border-radius:9px; color:#fff; margin-right:4px; }
+</style>
+</head>
+<body>
+
+<!-- ======================= PÁGINA 1: VISÃO GERAL ======================= -->
+<section class="pagina">
+<h1>Arquitetura da solução - Agente de relatórios de SRAG</h1>
+<div class="sub">Prova de conceito Indicium HealthCare · LangGraph + LLM (Gemini/OpenAI) · Os números são calculados por ferramentas determinísticas; o LLM decide e escreve, mas não calcula.</div>
+
+<svg viewBox="0 0 1100 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#52514e"/>
+    </marker>
+    <marker id="setaAzul" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/>
+    </marker>
+    <marker id="setaVioleta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#6250d6"/>
+    </marker>
+    <pattern id="hach" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="6" stroke="#eb6834" stroke-width="1.2" opacity=".35"/>
+    </pattern>
+  </defs>
+
+  <!-- ===== Colunas (rótulos) ===== -->
+  <g font-size="10.5" fill="#52514e" font-weight="600" letter-spacing=".06em">
+    <text x="20" y="14">FONTES DE DADOS</text>
+    <text x="262" y="14">FERRAMENTAS (TOOLS)</text>
+    <text x="512" y="14">AGENTE PRINCIPAL (ORQUESTRADOR)</text>
+    <text x="862" y="14">LLM E SAÍDA</text>
+  </g>
+
+  <!-- ===== Fontes de dados ===== -->
+  <g>
+    <rect x="20" y="28" width="210" height="62" rx="8" fill="#f4f3f0" stroke="#bdbbb5"/>
+    <text x="34" y="51" font-size="13" font-weight="700">Open DATASUS</text>
+    <text x="34" y="68" font-size="10.5" fill="#52514e">SRAG Hospitalizado (CSV, 165 mil</text>
+    <text x="34" y="81" font-size="10.5" fill="#52514e">linhas, ~190 colunas)</text>
+
+    <rect x="20" y="122" width="210" height="96" rx="8" fill="#f4f3f0" stroke="#bdbbb5"/>
+    <text x="34" y="144" font-size="13" font-weight="700">ETL (pandas)</text>
+    <text x="34" y="161" font-size="10.5" fill="#52514e">• 13 colunas necessárias (LGPD)</text>
+    <text x="34" y="175" font-size="10.5" fill="#52514e">• idade → faixa etária</text>
+    <text x="34" y="189" font-size="10.5" fill="#52514e">• códigos → rótulos legíveis</text>
+    <text x="34" y="203" font-size="10.5" fill="#52514e">• datas impossíveis anuladas</text>
+
+    <rect x="20" y="250" width="210" height="62" rx="8" fill="#f4f3f0" stroke="#bdbbb5"/>
+    <text x="34" y="273" font-size="13" font-weight="700">Banco SQLite</text>
+    <text x="34" y="290" font-size="10.5" fill="#52514e">casos_srag · aberto em modo</text>
+    <text x="34" y="303" font-size="10.5" fill="#52514e">somente leitura pelas tools</text>
+
+    <rect x="20" y="430" width="210" height="62" rx="8" fill="#f4f3f0" stroke="#bdbbb5"/>
+    <text x="34" y="453" font-size="13" font-weight="700">Google Notícias (RSS)</text>
+    <text x="34" y="470" font-size="10.5" fill="#52514e">notícias em tempo real, sem</text>
+    <text x="34" y="483" font-size="10.5" fill="#52514e">chave de API</text>
+
+    <line x1="125" y1="90" x2="125" y2="120" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+    <line x1="125" y1="218" x2="125" y2="248" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+  </g>
+
+  <!-- ===== Ferramentas ===== -->
+  <g>
+    <rect x="262" y="230" width="210" height="62" rx="8" fill="#e8f1fc" stroke="#2a78d6"/>
+    <text x="276" y="253" font-size="12.5" font-weight="700">consultar_metricas</text>
+    <text x="276" y="270" font-size="10.5" fill="#52514e">SQL fixo e parametrizado: 4 taxas</text>
+    <text x="276" y="283" font-size="10.5" fill="#52514e">com numerador e denominador</text>
+
+    <rect x="262" y="310" width="210" height="62" rx="8" fill="#e8f1fc" stroke="#2a78d6"/>
+    <text x="276" y="333" font-size="12.5" font-weight="700">gerar_graficos</text>
+    <text x="276" y="350" font-size="10.5" fill="#52514e">diário (30 dias, média móvel)</text>
+    <text x="276" y="363" font-size="10.5" fill="#52514e">e mensal (12 meses)</text>
+
+    <rect x="262" y="430" width="210" height="62" rx="8" fill="#e8f1fc" stroke="#2a78d6"/>
+    <text x="276" y="453" font-size="12.5" font-weight="700">buscar_noticias</text>
+    <text x="276" y="470" font-size="10.5" fill="#52514e">só temas de SRAG · máx. 3 buscas</text>
+    <text x="276" y="483" font-size="10.5" fill="#52514e">texto sanitizado antes do LLM</text>
+
+    <!-- tools -> fontes -->
+    <path d="M262,261 L246,261 L246,281 L232,281" fill="none" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+    <path d="M262,341 L246,341 L246,295 L232,295" fill="none" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+    <line x1="262" y1="461" x2="232" y2="461" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+  </g>
+
+  <!-- ===== Orquestrador ===== -->
+  <g>
+    <rect x="502" y="28" width="330" height="464" rx="12" fill="#ffffff" stroke="#2a78d6" stroke-width="2"/>
+    <text x="518" y="51" font-size="13" font-weight="700" fill="#2a78d6">LangGraph · StateGraph</text>
+
+    <!-- nós -->
+    <g font-size="11.5">
+      <rect x="532" y="66" width="270" height="40" rx="6" fill="#2a78d6"/>
+      <text x="667" y="84" text-anchor="middle" fill="#fff" font-weight="700">① orquestrador</text>
+      <text x="667" y="98" text-anchor="middle" fill="#e8f1fc" font-size="9.5">LLM escolhe as ferramentas (tool calling) · máx. 6 rodadas</text>
+
+      <rect x="532" y="128" width="270" height="40" rx="6" fill="#e8f1fc" stroke="#2a78d6"/>
+      <text x="667" y="146" text-anchor="middle" font-weight="700">② executar_ferramentas</text>
+      <text x="667" y="160" text-anchor="middle" fill="#52514e" font-size="9.5">lista de ferramentas permitidas · auditoria por chamada</text>
+
+      <rect x="532" y="190" width="270" height="40" rx="6" fill="url(#hach)" stroke="#eb6834"/>
+      <text x="667" y="208" text-anchor="middle" font-weight="700">③ garantir_insumos</text>
+      <text x="667" y="222" text-anchor="middle" fill="#52514e" font-size="9.5">métricas, gráficos e notícias são obrigatórios</text>
+
+      <rect x="532" y="252" width="270" height="40" rx="6" fill="#2a78d6"/>
+      <text x="667" y="270" text-anchor="middle" fill="#fff" font-weight="700">④ redigir</text>
+      <text x="667" y="284" text-anchor="middle" fill="#e8f1fc" font-size="9.5">LLM escreve comentários em saída estruturada</text>
+
+      <rect x="532" y="314" width="270" height="52" rx="6" fill="url(#hach)" stroke="#eb6834"/>
+      <text x="667" y="332" text-anchor="middle" font-weight="700">⑤ validar (guardrails de saída)</text>
+      <text x="667" y="346" text-anchor="middle" fill="#52514e" font-size="9.5">todo número tem que vir das ferramentas ·</text>
+      <text x="667" y="358" text-anchor="middle" fill="#52514e" font-size="9.5">citações existentes · até 2 correções</text>
+
+      <rect x="532" y="388" width="125" height="40" rx="6" fill="#f4f3f0" stroke="#bdbbb5"/>
+      <text x="594" y="406" text-anchor="middle" font-weight="700" font-size="10.5">texto_padrao</text>
+      <text x="594" y="420" text-anchor="middle" fill="#52514e" font-size="9">se reprovado 3x</text>
+
+      <rect x="677" y="388" width="125" height="40" rx="6" fill="#2a78d6"/>
+      <text x="739" y="406" text-anchor="middle" fill="#fff" font-weight="700" font-size="10.5">⑥ montar_relatorio</text>
+      <text x="739" y="420" text-anchor="middle" fill="#e8f1fc" font-size="9">determinístico (Jinja2)</text>
+    </g>
+
+    <!-- setas entre nós -->
+    <line x1="650" y1="106" x2="650" y2="126" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <line x1="684" y1="128" x2="684" y2="108" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <text x="692" y="121" font-size="9" fill="#2a78d6">loop</text>
+    <path d="M532,86 L516,86 L516,210 L530,210" fill="none" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <text x="512" y="150" font-size="9" fill="#2a78d6" transform="rotate(-90 512 150)" text-anchor="middle">CONCLUÍDO</text>
+    <line x1="667" y1="230" x2="667" y2="250" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <line x1="667" y1="292" x2="667" y2="312" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <path d="M802,340 L818,340 L818,272 L804,272" fill="none" stroke="#eb6834" stroke-width="1.5" marker-end="url(#seta)"/>
+    <text x="822" y="310" font-size="9" fill="#eb6834" transform="rotate(90 822 310)" text-anchor="middle">corrigir</text>
+    <line x1="739" y1="366" x2="739" y2="386" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <text x="745" y="380" font-size="9" fill="#2a78d6">aprovado</text>
+    <line x1="594" y1="366" x2="594" y2="386" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+    <line x1="657" y1="408" x2="675" y2="408" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+
+    <text x="518" y="452" font-size="10" fill="#52514e">Estado compartilhado: métricas · gráficos · notícias numeradas</text>
+    <text x="518" y="466" font-size="10" fill="#52514e">· comentário · tentativas · violações · caminho dos arquivos</text>
+    <text x="518" y="482" font-size="10" fill="#52514e">Modo --sem-llm: ③ → texto_padrao → ⑥ (pipeline testável offline)</text>
+
+    <!-- orquestrador -> ferramentas -->
+    <path d="M532,148 L490,148 L490,261 L474,261" fill="none" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <path d="M490,261 L490,341 L474,341" fill="none" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+    <path d="M490,341 L490,461 L474,461" fill="none" stroke="#2a78d6" stroke-width="1.5" marker-end="url(#setaAzul)"/>
+  </g>
+
+  <!-- ===== LLM e saída ===== -->
+  <g>
+    <rect x="862" y="28" width="218" height="200" rx="10" fill="#f0eefc" stroke="#6250d6" stroke-width="1.5"/>
+    <text x="876" y="51" font-size="13" font-weight="700" fill="#6250d6">LLM</text>
+    <text x="876" y="67" font-size="10.5" fill="#52514e">Gemini (padrão) ou OpenAI</text>
+    <text x="876" y="80" font-size="10.5" fill="#52514e">trocável pelo .env · temperatura 0,2</text>
+    <text x="876" y="104" font-size="10.5" font-weight="700">Interações</text>
+    <text x="876" y="120" font-size="10.5">① decide ferramentas e consultas</text>
+    <text x="876" y="135" font-size="10.5">④ escreve a análise (JSON)</text>
+    <text x="876" y="159" font-size="10.5" font-weight="700">Recebe apenas</text>
+    <text x="876" y="175" font-size="10.5">indicadores agregados e títulos</text>
+    <text x="876" y="189" font-size="10.5">de notícias sanitizados.</text>
+    <text x="876" y="205" font-size="10.5" fill="#6250d6" font-weight="700">Nenhum dado de paciente.</text>
+
+    <path d="M802,80 L862,80" fill="none" stroke="#6250d6" stroke-width="1.5" marker-end="url(#setaVioleta)" marker-start="url(#setaVioleta)"/>
+    <path d="M802,272 L840,272 L840,130 L860,130" fill="none" stroke="#6250d6" stroke-width="1.5" marker-end="url(#setaVioleta)" marker-start="url(#setaVioleta)"/>
+
+    <rect x="862" y="330" width="218" height="98" rx="10" fill="#0b0b0b"/>
+    <text x="876" y="354" font-size="13" font-weight="700" fill="#fff">Relatório</text>
+    <text x="876" y="372" font-size="10.5" fill="#d9d8d3">HTML (impressão/PDF) e Markdown:</text>
+    <text x="876" y="387" font-size="10.5" fill="#d9d8d3">4 indicadores · 2 gráficos · análise</text>
+    <text x="876" y="402" font-size="10.5" fill="#d9d8d3">· notícias citadas · limitações ·</text>
+    <text x="876" y="417" font-size="10.5" fill="#d9d8d3">seção de governança da execução</text>
+    <line x1="802" y1="408" x2="860" y2="408" stroke="#52514e" stroke-width="1.5" marker-end="url(#seta)"/>
+  </g>
+
+  <!-- ===== Faixa de governança ===== -->
+  <g>
+    <rect x="20" y="512" width="1060" height="80" rx="10" fill="#e9f7f1" stroke="#1baf7a" stroke-width="1.5"/>
+    <text x="36" y="534" font-size="12.5" font-weight="700" fill="#0b7a53">Governança e transparência - atravessa todas as etapas</text>
+    <g font-size="10.5">
+      <text x="36" y="554" font-weight="700">Trilha de auditoria (JSONL)</text>
+      <text x="36" y="569" fill="#52514e">id da execução · cada decisão do LLM · cada tool</text>
+      <text x="36" y="583" fill="#52514e">com argumentos, duração e saída · versão do prompt</text>
+
+      <text x="318" y="554" font-weight="700">Guardrails de entrada</text>
+      <text x="318" y="569" fill="#52514e">consulta só sobre SRAG · notícias = dado, não</text>
+      <text x="318" y="583" fill="#52514e">instrução (anti prompt injection) · SQL fixo</text>
+
+      <text x="590" y="554" font-weight="700">Guardrails de saída</text>
+      <text x="590" y="569" fill="#52514e">números rastreáveis · citações válidas · máscara</text>
+      <text x="590" y="583" fill="#52514e">de CPF/e-mail/telefone · texto padrão de reserva</text>
+
+      <text x="862" y="554" font-weight="700">Dados sensíveis (LGPD)</text>
+      <text x="862" y="569" fill="#52514e">minimização no ETL · LLM só vê agregados</text>
+      <text x="862" y="583" fill="#52514e">· chaves no .env / GitHub Secrets</text>
+    </g>
+  </g>
+</svg>
+
+<div class="rodape"><span>Legenda: <span class="tag" style="background:#2a78d6">agente/tools</span><span class="tag" style="background:#6250d6">LLM</span><span class="tag" style="background:#eb6834">guardrail</span><span class="tag" style="background:#1baf7a">governança</span><span class="tag" style="background:#8a8984">dados</span></span><span>Maria de Fátima Barboza · Certificação AI Engineer - Indicium AI · Página 1/2</span></div>
+</section>
+
+<!-- ======================= PÁGINA 2: DETALHE ======================= -->
+<section class="pagina">
+<h1>Ferramentas, interações e controles</h1>
+<div class="sub">Detalhe do que cada componente faz, o que o LLM pode e não pode fazer, e onde cada risco é tratado.</div>
+
+<div class="duas">
+<div>
+<h2>Ferramentas do agente</h2>
+<table>
+<tr><th>Tool</th><th>Entrada</th><th>Saída</th><th>Controle</th></tr>
+<tr><td>consultar_metricas</td><td>nenhuma (o LLM não escreve SQL)</td><td>4 taxas com valor, numerador, denominador, período e definição</td><td>SQLite em modo read-only; consultas fixas e parametrizadas</td></tr>
+<tr><td>gerar_graficos</td><td>nenhuma</td><td>2 imagens PNG (30 dias com média móvel de 7 dias; 12 meses com meses parciais marcados)</td><td>dados lidos do mesmo banco das métricas</td></tr>
+<tr><td>buscar_noticias</td><td>consulta curta em português</td><td>até 8 notícias: título, veículo, data e link</td><td>filtro de tema, limite de 3 buscas, sanitização e timeout</td></tr>
+</table>
+
+<h2 style="margin-top:16px">Definição das métricas</h2>
+<table>
+<tr><th>Métrica</th><th>Cálculo</th></tr>
+<tr><td>Aumento de casos</td><td>casos notificados nos últimos 7 dias ÷ 7 dias anteriores − 1 (também 30 dias)</td></tr>
+<tr><td>Mortalidade</td><td>óbitos por SRAG ÷ casos encerrados (cura ou óbito), 30 dias</td></tr>
+<tr><td>Ocupação de UTI*</td><td>internados em UTI ÷ casos com informação de UTI, 30 dias</td></tr>
+<tr><td>Vacinação*</td><td>casos com vacina covid comprovada (data da 1ª dose) ÷ casos com informação, 30 dias</td></tr>
+</table>
+<p style="font-size:10px;color:#52514e;margin:5px 0 0">* Aproximações: a base não informa leitos disponíveis nem a população total. Data de referência = último dia completo do arquivo.</p>
+</div>
+
+<div>
+<h2>Interações com o LLM</h2>
+<table>
+<tr><th>Etapa</th><th>O LLM pode</th><th>O LLM não pode</th></tr>
+<tr><td>① orquestrador</td><td>escolher ferramentas e formular buscas de notícias</td><td>usar ferramenta fora da lista; passar de 6 rodadas ou 3 buscas</td></tr>
+<tr><td>④ redigir</td><td>interpretar as métricas e relacionar com as notícias, citando [n]</td><td>criar números, citar notícia inexistente, dar orientação médica</td></tr>
+</table>
+
+<h2 style="margin-top:16px">Riscos e mitigações</h2>
+<table>
+<tr><th>Risco</th><th>Mitigação</th></tr>
+<tr><td>Alucinação de números</td><td>validação de todo número citado contra as saídas das tools; correção ou texto padrão</td></tr>
+<tr><td>Prompt injection via notícia</td><td>sanitização + delimitação &lt;noticias&gt; + regra explícita no prompt</td></tr>
+<tr><td>Vazamento de dados pessoais</td><td>minimização no ETL; LLM só recebe agregados; máscara de PII na saída</td></tr>
+<tr><td>Ferramenta obrigatória pulada</td><td>nó garantir_insumos executa e registra na auditoria</td></tr>
+<tr><td>Falha de rede ou do LLM</td><td>relatório sai mesmo assim, com aviso, e o evento fica registrado</td></tr>
+<tr><td>Falta de rastreabilidade</td><td>JSONL por execução + resumo de governança impresso no relatório</td></tr>
+<tr><td>Vazamento de chave</td><td>.env fora do Git; GitHub Secrets na execução automatizada</td></tr>
+</table>
+</div>
+</div>
+
+<div class="rodape"><span>Stack: Python 3.12 · LangGraph · LangChain · pandas · SQLite · matplotlib · Jinja2 · pytest · ruff · GitHub Actions</span><span>Maria de Fátima Barboza · Certificação AI Engineer - Indicium AI · Página 2/2</span></div>
+</section>
+</body>
+</html>

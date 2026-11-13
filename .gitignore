@@ -1,0 +1,18 @@
+# Segredos: a chave de API nunca vai para o repositório
+.env
+
+# Banco gerado pelo ETL (recriado a partir do .zip em data/raw)
+data/processed/
+
+# Execuções locais (exemplos versionados ficam em docs/exemplo_relatorio)
+logs/
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
